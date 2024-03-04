@@ -137,7 +137,7 @@ QtObject {
         }
     }
 
-    readonly property size windowedFrameSize: Qt.size(680, 540)
+    readonly property size windowedFrameSize: Qt.size(680, 500)
 
     property var windowedFrame: ApplicationWindow {
         id: windowedFrameWindow
@@ -150,16 +150,16 @@ QtObject {
             if (DebugHelper.useRegularWindow) return Qt.Window
             return (Qt.WindowStaysOnTopHint | Qt.FramelessWindowHint | Qt.Tool)
         }
-        StyledBehindWindowBlur {
+        /*StyledBehindWindowBlur {
             control: parent
             anchors.fill: parent
-        }
+        }*/
         InsideBoxBorder {
             anchors.fill: parent
             radius: windowedFrameWindow.DWindow.windowRadius
         }
 
-        color: "transparent"
+        // color: "transparent"
 
         DWindow.enabled: !DebugHelper.useRegularWindow
         DWindow.enableSystemResize: false

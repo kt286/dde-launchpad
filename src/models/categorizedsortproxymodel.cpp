@@ -6,6 +6,8 @@
 #include "categorizedsortproxymodel.h"
 
 #include <QSet>
+#include <QDebug>
+#include <DPinyin>
 
 void CategorizedSortProxyModel::setCategoryType(CategoryType categoryType)
 {
@@ -90,5 +92,18 @@ CategorizedSortProxyModel::CategorizedSortProxyModel(QObject *parent)
     : QSortFilterProxyModel(parent)
 {
     setSortCaseSensitivity(Qt::CaseInsensitive);
+    setFilterCaseSensitivity(Qt::CaseInsensitive);
     setSourceModel(&AppsModel::instance());
+}
+
+bool CategorizedSortProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const
+{
+    QModelIndex modelIndex = this->sourceModel()->index(sourceRow, 0, sourceParent);
+    const QRegularExpression searchPattern = this->filterRegularExpression();
+
+    const QString & displayName = modelIndex.data(Qt::DisplayRole).toString();
+    const QString & transliterated = modelIndex.data(AppsModel::TransliteratedRole).toString();
+    const QString & jianpin = Dtk::Core::firstLetters(displayName).join(',');
+
+    return displayName.contains(searchPattern) || transliterated.contains(searchPattern) || jianpin.contains(searchPattern);
 }

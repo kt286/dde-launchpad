@@ -2,7 +2,7 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
-import QtCore
+//import QtCore
 import QtQuick 2.15
 import QtQml.Models 2.15
 import QtQuick.Layouts 1.15
@@ -35,17 +35,28 @@ StackView {
                     Layout.fillWidth: false
                     Layout.fillHeight: true
 
+                    Layout.leftMargin: 10
+                    Layout.rightMargin: 0
+                    Layout.topMargin: 10
+                    Layout.bottomMargin: 10
+
+                    ToolButton {
+                        icon.name: "launcher_fullscreen"
+                        Accessible.name: "Fullscreen"
+                        onClicked: {
+                            LauncherController.currentFrame = "FullscreenFrame"
+                        }
+                    }
                     ToolButton {
                         icon.name: "title-icon"
-                        checked: CategorizedSortProxyModel.categoryType === CategorizedSortProxyModel.DDECategory
+                        //checked: CategorizedSortProxyModel.categoryType === CategorizedSortProxyModel.DDECategory
                         onClicked: {
                             CategorizedSortProxyModel.categoryType = CategorizedSortProxyModel.DDECategory
                         }
                     }
-
                     ToolButton {
                         icon.name: "letter-icon"
-                        checked: CategorizedSortProxyModel.categoryType === CategorizedSortProxyModel.Alphabetary
+                        //checked: CategorizedSortProxyModel.categoryType === CategorizedSortProxyModel.Alphabetary
                         onClicked: {
                             CategorizedSortProxyModel.categoryType = CategorizedSortProxyModel.Alphabetary
                         }
@@ -55,36 +66,75 @@ StackView {
                         Layout.fillHeight: true
                     }
 
-                    ToolButton {
-                        icon.name: "folder-images-symbolic"
+                    /*ToolButton {
+                        icon.name: "im-user"
                         ToolTip.visible: hovered
                         ToolTip.delay: 1000
-                        ToolTip.text: qsTr("Pictures")
+                        ToolTip.text: "用户"
                         onClicked: {
-                            DesktopIntegration.showFolder(StandardPaths.PicturesLocation)
+                            DesktopIntegration.openSystemSettings();
                         }
-                    }
-
-                    ToolButton {
-                        icon.name: "folder-documents-symbolic"
-                        ToolTip.visible: hovered
-                        ToolTip.delay: 1000
-                        ToolTip.text: qsTr("Documents")
-                        onClicked: {
-                            DesktopIntegration.showFolder(StandardPaths.DocumentsLocation)
-                        }
-                    }
-
+                    }*/
                     ToolButton {
                         icon.name: "folder-desktop-symbolic"
                         ToolTip.visible: hovered
                         ToolTip.delay: 1000
-                        ToolTip.text: qsTr("Desktop")
+                        ToolTip.text: "桌面"
                         onClicked: {
-                            DesktopIntegration.showFolder(StandardPaths.DesktopLocation)
+                            //DesktopIntegration.showFolder(StandardPaths.DesktopLocation)
+                            DesktopIntegration.showFolder(DesktopIntegration.environmentVariable("HOME") + "/Desktop")
                         }
                     }
-
+                    ToolButton {
+                        icon.name: "folder-videos-symbolic"
+                        ToolTip.visible: hovered
+                        ToolTip.delay: 1000
+                        ToolTip.text: "视频"
+                        onClicked: {
+                            //DesktopIntegration.showFolder(StandardPaths.MoviesLocation)
+                            DesktopIntegration.showFolder(DesktopIntegration.environmentVariable("HOME") + "/Videos")
+                        }
+                    }
+                    ToolButton {
+                        icon.name: "folder-music-symbolic"
+                        ToolTip.visible: hovered
+                        ToolTip.delay: 1000
+                        ToolTip.text: "音乐"
+                        onClicked: {
+                            //DesktopIntegration.showFolder(StandardPaths.MusicLocation)
+                            DesktopIntegration.showFolder(DesktopIntegration.environmentVariable("HOME") + "/Music")
+                        }
+                    }
+                    ToolButton {
+                        icon.name: "folder-images-symbolic"
+                        ToolTip.visible: hovered
+                        ToolTip.delay: 1000
+                        ToolTip.text: "图片"
+                        onClicked: {
+                            //DesktopIntegration.showFolder(StandardPaths.PicturesLocation)
+                            DesktopIntegration.showFolder(DesktopIntegration.environmentVariable("HOME") + "/Pictures")
+                        }
+                    }
+                    ToolButton {
+                        icon.name: "folder-documents-symbolic"
+                        ToolTip.visible: hovered
+                        ToolTip.delay: 1000
+                        ToolTip.text: "文档"
+                        onClicked: {
+                            //DesktopIntegration.showFolder(StandardPaths.DocumentsLocation)
+                            DesktopIntegration.showFolder(DesktopIntegration.environmentVariable("HOME") + "/Documents")
+                        }
+                    }
+                    ToolButton {
+                        icon.name: "folder-download-symbolic"
+                        ToolTip.visible: hovered
+                        ToolTip.delay: 1000
+                        ToolTip.text: "下载"
+                        onClicked: {
+                            //DesktopIntegration.showFolder(StandardPaths.DownloadLocation)
+                            DesktopIntegration.showFolder(DesktopIntegration.environmentVariable("HOME") + "/Downloads")
+                        }
+                    }
                     ToolButton {
                         icon.name: "setting"
                         ToolTip.visible: hovered
@@ -95,8 +145,14 @@ StackView {
                         }
                     }
 
-                    Item {
-                        Layout.fillHeight: true
+                    ToolButton {
+                        icon.name: "shutdown"
+                        ToolTip.visible: hovered
+                        ToolTip.delay: 1000
+                        ToolTip.text: qsTr("Power")
+                        onClicked: {
+                            DesktopIntegration.openShutdownScreen();
+                        }
                     }
                 }
 
@@ -104,6 +160,15 @@ StackView {
                     Layout.fillWidth: false
                     Layout.preferredWidth: 220
                     Layout.fillHeight: true
+                    
+                    Layout.leftMargin: 5
+                    Layout.rightMargin: 5
+
+                    Rectangle {
+                        anchors.fill: parent
+                        color: DTK.themeType === ApplicationHelper.DarkType ? "#666666": "#AAAAAA"
+                        opacity: 0.1
+                    }
 
                     DelegateModel {
                         id: delegateCategorizedModel
@@ -116,7 +181,6 @@ StackView {
                             icon.name: iconName
                             width: appListView.width
                             font: DTK.fontManager.t8
-                //            icon.source: "image://app-icon/" + iconName;
                             ColorSelector.family: Palette.CrystalColor
 
                             TapHandler {
@@ -147,7 +211,11 @@ StackView {
                         id: appListView
                         Layout.fillWidth: true
                         Layout.fillHeight: true
-
+                        
+                        Layout.leftMargin: 10
+                        Layout.rightMargin: 10
+                        Layout.topMargin: 10
+                    
                         model: delegateCategorizedModel
 
                         onSectionHeaderClicked: {
@@ -158,23 +226,44 @@ StackView {
                             }
                         }
                     }
+
+                    SearchEdit {
+                        id: searchEdit
+
+                        Layout.fillWidth: true
+                        Layout.preferredHeight: 30
+                        Layout.leftMargin: 18
+                        Layout.rightMargin: 18
+                        Layout.topMargin: 10
+                        Layout.bottomMargin: 14
+
+                        placeholder: qsTr("Search")
+                        onTextChanged: {
+                            CategorizedSortProxyModel.setFilterRegularExpression(text)
+                        }
+                    }
                 }
 
                 ColumnLayout {
                     Layout.fillWidth: true
                     Layout.fillHeight: true
 
-                    Label {
+                    Layout.leftMargin: 0
+                    Layout.rightMargin: 10
+                    Layout.topMargin: 10
+                    Layout.bottomMargin: 10
+
+                    /*Label {
                         visible: favoriteGridView.visible
                         text: qsTr("My Favorites")
                         font: LauncherController.boldFont(DTK.fontManager.t6)
-                    }
+                    }*/
 
                     Item {
                         id: favoriteGridView
-                        visible: searchEdit.text === ""
 
-                        property int rowCount: Math.min(Math.ceil(delegateFavorateModel.count / 4), 2)
+                        //property int rowCount: Math.min(Math.ceil(delegateFavorateModel.count / 4), 2)
+                        property int rowCount: Math.ceil(delegateFavorateModel.count / 4)
 
                         DelegateModel {
                             id: delegateFavorateModel
@@ -194,6 +283,8 @@ StackView {
 
                         GridViewContainer {
                             anchors.fill: parent
+                            // anchors.topMargin: 12
+
                             id: favoriteGridViewContainer
                             rows: 0
                             columns: 4
@@ -206,9 +297,11 @@ StackView {
 
                         Layout.preferredHeight: rowCount === 0 ? 50 : rowCount * favoriteGridViewContainer.cellSize
                         Layout.fillWidth: true
+                        Layout.fillHeight: true
                     }
 
                     Label {
+                        visible: false
                         text: qsTr("All Apps")
                         font: LauncherController.boldFont(DTK.fontManager.t6)
                     }
@@ -230,6 +323,7 @@ StackView {
                     }
 
                     GridViewContainer {
+                        visible: false
                         id: allAppsGridContainer
                         rows: 0
                         columns: 4
@@ -255,43 +349,6 @@ StackView {
                             }
                             onReleased: currentIndex = -1
                         }
-                    }
-                }
-            }
-
-            RowLayout {
-                // Layout.preferredHeight: 20
-                Layout.fillWidth: true
-
-                ToolButton {
-                    icon.name: "shutdown"
-                    ToolTip.visible: hovered
-                    ToolTip.delay: 1000
-                    ToolTip.text: qsTr("Power")
-                    onClicked: {
-                        DesktopIntegration.openShutdownScreen();
-                    }
-                }
-
-                SearchEdit {
-                    id: searchEdit
-
-                    Layout.leftMargin: parent.width / 4
-                    Layout.rightMargin: parent.width / 4
-
-                    Layout.fillWidth: true
-                    placeholder: qsTr("Search")
-                    onTextChanged: {
-                        console.log(text)
-                        SearchFilterProxyModel.setFilterRegularExpression(text)
-                    }
-                }
-
-                ToolButton {
-                    icon.name: "launcher_fullscreen"
-                    Accessible.name: "Fullscreen"
-                    onClicked: {
-                        LauncherController.currentFrame = "FullscreenFrame"
                     }
                 }
             }

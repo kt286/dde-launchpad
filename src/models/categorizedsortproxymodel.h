@@ -38,6 +38,7 @@ signals:
 
 protected:
     bool lessThan(const QModelIndex &source_left, const QModelIndex &source_right) const override;
+    bool filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const override;
 
 private:
     explicit CategorizedSortProxyModel(QObject *parent = nullptr);

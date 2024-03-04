@@ -1,4 +1,4 @@
-dde-launchpad (0.4.6) unstable; urgency=medium
+dde-launchpad (0.4.6+kt286) unstable; urgency=medium
 
   * Adapt UI changes according to designer
   * Fix tab and space and trigger quick search
